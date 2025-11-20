@@ -48,10 +48,11 @@ int main(int argc, char *argv[]) {
     send(sock, filename, strlen(filename), 0);
 
     // Wait for "OK"
-    recv(sock, buffer, sizeof(buffer), 0);
+    //recv(sock, buffer, sizeof(buffer), 0);
+    recv(sock, buffer, 2, 0);
 
     // Open file for writing
-    fp = fopen(filename, "wb");
+    fp = fopen(filename, "wb+");
     if (!fp) {
         perror("fopen");
         close(sock);
@@ -63,7 +64,8 @@ int main(int argc, char *argv[]) {
     // Receive file data
     ssize_t n;
     while ((n = recv(sock, buffer, BUFFER_SIZE, 0)) > 0) {
-        fwrite(buffer, 1, n, fp);
+        printf("Contents: %s\n",buffer);
+        fwrite(buffer, sizeof(buffer[0]), n, fp);
     }
 
     printf("File sent successfully.\n");

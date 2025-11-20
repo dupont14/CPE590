@@ -71,7 +71,8 @@ int main() {
 
     // Send file data
     size_t n;
-    while ((n = fread(buffer, 1, BUFFER_SIZE, fp)) > 0) {
+    while ((n = fread(buffer, sizeof(buffer[0]), BUFFER_SIZE, fp)) > 0) {
+        printf("Content of file: %s",buffer);
         if (send(new_socket, buffer, n, 0) < 0) {
             perror("send");
             fclose(fp);
